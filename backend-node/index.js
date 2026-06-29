@@ -1,5 +1,10 @@
 require("dotenv").config();
 
+const fs = require('fs')
+
+if (!fs.existsSync('uploads')) {
+    fs.mkdirSync('uploads')
+}
 const express = require("express");
 const cors = require('cors')     
 
