@@ -3,8 +3,9 @@ const pool = require('../config/db.js')
 const upload = require('../config/multer.js')
 const router = express.Router()
 const axios = require('axios')
+const { protect, adminOnly } = require('../middleware/authMiddleware.js')
 
-router.post('/upload',upload.single('pdf'), async (req,res,next) =>{
+router.post('/upload', protect, adminOnly, upload.single('pdf'), async (req, res, next) => {
     try {
         if(!req.file){
             return res.status(400).json({
@@ -31,7 +32,7 @@ router.post('/upload',upload.single('pdf'), async (req,res,next) =>{
         next(err)
     }
 })
-router.get('/documents', async (req,res,next) =>{
+router.get('/documents', protect, adminOnly, async (req, res, next) => {
     try {
         const result = await pool.query(
             'SELECT * FROM documents ORDER BY uploaded_at DESC'
@@ -45,7 +46,7 @@ router.get('/documents', async (req,res,next) =>{
     }
 })
 //:id id url paramter user send id here
-router.delete('/documents/:id', async (req, res, next) => {
+router.delete('/documents/:id', protect, adminOnly, async (req, res, next) => {
     try {
         //used for parameters
         const documentId = req.params.id

@@ -9,6 +9,7 @@ app.use(cors())
 app.use(express.json());
 
 app.use("/api", require("./routes/upload"));
+app.use('/api/auth', require('./routes/auth')) 
 
 app.get("/health", (req, res) => {
   res.json({ status: "server is running" });
@@ -21,6 +22,10 @@ app.get("/", (req, res) => {
       upload: "POST /api/upload",
       documents: "GET /api/documents",
       health: "GET /health",
+      delete: 'DELETE /api/documents/:id',
+      register: 'POST /api/auth/register',
+      login: 'POST /api/auth/login'
+
     },
   });
 });

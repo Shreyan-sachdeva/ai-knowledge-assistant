@@ -100,7 +100,8 @@
             <h1>Admin Panel</h1>
             <div class="nav-buttons">
                 <button class="chat-btn" onclick="window.location.href='user.html'">Go to Chat</button>
-                <button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
+                <button class="logout-btn"
+                    onclick="localStorage.removeItem('token'); localStorage.removeItem('role'); window.location.href='login.html'">Logout</button>
             </div>
         </div>
         <div class="section">
@@ -123,6 +124,13 @@
         </div>
     </div>
     <script>
+        function getToken() {
+            return localStorage.getItem('token')
+        }
+
+        if (!getToken()) {
+            window.location.href = 'login.html'
+        }
         async function uploadPDF() {
             const fileInput = document.getElementById('pdfFile')
             const file = fileInput.files[0]
@@ -132,9 +140,11 @@
             try {
                 const response = await fetch('http://localhost:3000/api/upload', {
                     method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + getToken()
+                    },
                     body: formData
                 })
-
                 fileInput.value = ''
                 getDocuments()
             } catch (err) {
@@ -145,7 +155,11 @@
         async function getDocuments() {
             const tbody = document.getElementById('documentsTable')
             try {
-                const response = await fetch('http://localhost:3000/api/documents')
+                const response = await fetch('http://localhost:3000/api/documents', {
+                    headers: {
+                        'Authorization': 'Bearer ' + getToken()
+                    }
+                })
                 const data = await response.json()
                 tbody.innerHTML = ''
                 data.documents.forEach((doc, index) => {
@@ -167,7 +181,10 @@
         async function deleteDocument(id) {
             try {
                 const response = await fetch(`http://localhost:3000/api/documents/${id}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'Bearer ' + getToken()
+                    }
                 })
 
                 const data = await response.json()
