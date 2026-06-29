@@ -1,26 +1,119 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log-In-Ai-Knowledge-Assistant</title>
+    <title>Login - AI Knowledge Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            width: 350px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 12px;
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
-    <div>
-        <div>
-            <h3>Log In</h3>
-            <form action="">
-                <label for="email">
-                    Email:
-                    <br><input placeholder="Email" type="email" name="email" id="">
-                </label><br>
-                <label for="password">
-                    Password:
-                    <br><input placeholder="password" name="password" id="">
-                </label><br>
-                <button type="submit">Submit</button>
-            </form>
-        </div>
+    <div class="login-box">
+        <h2>AI Knowledge Assistant</h2>
+        <label>Username</label>
+        <input type="text" id="username" placeholder="Enter username">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Enter password">
+        <button onclick="login()">Login</button>
+        <p class="error" id="errorMsg">Invalid username or password</p>
     </div>
+
+    <script>
+        document.getElementById('password').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') login()
+        })
+
+        function login() {
+            const username = document.getElementById('username').value.trim()
+            const password = document.getElementById('password').value.trim()
+            const errorMsg = document.getElementById('errorMsg')
+
+            if (username === 'admin' && password === 'admin123') {
+                window.location.href = 'admin.html'
+                return
+            }
+
+            if (username === 'user' && password === 'user123') {
+                window.location.href = 'user.html'
+                return
+            }
+
+            errorMsg.style.display = 'block'
+        }
+    </script>
 </body>
+
 </html>
