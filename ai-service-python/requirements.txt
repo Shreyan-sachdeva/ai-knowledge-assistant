@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pdfplumber
+sentence-transformers
+psycopg2-binary
+python-dotenv
+axios
