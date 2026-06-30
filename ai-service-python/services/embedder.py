@@ -1,7 +1,13 @@
 from sentence_transformers import SentenceTransformer
-model = SentenceTransformer('paraphrase-MiniLM-L3-v2')
+
+model = None
+
+def get_model():
+    global model
+    if model is None:
+        model = SentenceTransformer('all-MiniLM-L6-v2')
+    return model
 
 def create_embeddings(chunks):
-    embeddings = model.encode(chunks)
-
+    embeddings = get_model().encode(chunks)
     return embeddings.tolist()
