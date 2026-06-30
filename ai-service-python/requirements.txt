@@ -4,4 +4,4 @@ pdfplumber
 fastembed
 psycopg2-binary
 python-dotenv
-axios
+groq
