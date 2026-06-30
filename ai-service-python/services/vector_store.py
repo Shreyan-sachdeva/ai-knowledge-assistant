@@ -8,6 +8,7 @@ def get_connection():
         database = os.getenv('DB_NAME'),        
         user = os.getenv('DB_USER'),
         password = os.getenv('DB_PASSWORD')
+        sslmode='require'
     )
 
 def store_chunks(chunks, embeddings, document_id):

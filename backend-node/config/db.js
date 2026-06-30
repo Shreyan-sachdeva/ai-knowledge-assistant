@@ -7,7 +7,9 @@ const pool =new Pool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     connectionTimeoutMillis: 5000,
-})
+    ssl: {
+        rejectUnauthorized: false
+    }})
 
 pool.connect((err) => {
     if(err){
