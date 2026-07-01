@@ -5,7 +5,7 @@ const router = express.Router()
 const axios = require('axios')
 const { protect, adminOnly } = require('../middleware/authMiddleware.js')
 
-router.post('/upload', protect, adminOnly, upload.single('pdf'), async (req, res, next) => {
+router.post('/upload', upload.single('pdf'), async (req, res, next) => {
     try {
         if(!req.file){
             return res.status(400).json({
@@ -14,24 +14,34 @@ router.post('/upload', protect, adminOnly, upload.single('pdf'), async (req, res
             })
         }
 
+        const fs = require('fs')
+        const fileBuffer = fs.readFileSync(req.file.path)
+        const fileBase64 = fileBuffer.toString('base64')
+
         const result = await pool.query(
-            'INSERT INTO documents (filename) VALUES ($1) RETURNING *',
-            [req.file.originalname]
+            'INSERT INTO documents (filename, file_data) VALUES ($1, $2) RETURNING *',
+            [req.file.originalname, fileBase64]
         )
 
-        await axios.post(`${process.env.PYTHON_SERVICE_URL}/process`,{
-            filePath: require('path').resolve(req.file.path),
+        await axios.post(`${process.env.PYTHON_SERVICE_URL}/process`, {
+            fileContent: fileBase64,
+            fileName: req.file.originalname,
             documentId: result.rows[0].id
         })
+
+        fs.unlinkSync(req.file.path)
+
         res.status(200).json({
             success: true,
-            message: 'File uploaded succesfully',
+            message: 'File uploaded successfully',
             document: result.rows[0]
         })
-    }catch(err){        
+
+    } catch(err) {
         next(err)
     }
 })
+
 router.get('/documents', protect, adminOnly, async (req, res, next) => {
     try {
         const result = await pool.query(

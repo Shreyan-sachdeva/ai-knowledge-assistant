@@ -25,7 +25,8 @@ app.add_middleware(
 ) 
 
 class ProcessRequest(BaseModel):
-    filePath: str
+    fileContent: str
+    fileName: str
     documentId: int
 
 class SearchRequest(BaseModel):
@@ -42,10 +43,27 @@ class HistoryRequest(BaseModel):
 @app.post("/process")
 async def process_document(request: ProcessRequest):
     try:
-        text = extract_text(request.filePath)
+        import base64
+        import tempfile
+        import os
+
+        file_content = base64.b64decode(request.fileContent)
+
+        with tempfile.NamedTemporaryFile(
+            suffix='.pdf',
+            delete=False
+        ) as temp_file:
+            temp_file.write(file_content)
+            temp_file_path = temp_file.name
+
+        text = extract_text(temp_file_path)
+
+        os.unlink(temp_file_path)
+
         chunks = chunk_text(text)
         embeddings = create_embeddings(chunks)
         store_chunks(chunks, embeddings, request.documentId)
+
         return {
             "success": True,
             "chunks": len(chunks)
