@@ -3,9 +3,11 @@ const pool = require('../config/db.js')
 const upload = require('../config/multer.js')
 const router = express.Router()
 const axios = require('axios')
+const FormData = require('form-data')
 const { protect, adminOnly } = require('../middleware/authMiddleware.js')
 
-router.post('/upload', protect, adminOnly, upload.single('pdf'), async (req, res, next) => {    try {
+router.post('/upload', protect, adminOnly, upload.single('pdf'), async (req, res, next) => {
+    try {
         if(!req.file){
             return res.status(400).json({
                 success: false,
@@ -13,19 +15,18 @@ router.post('/upload', protect, adminOnly, upload.single('pdf'), async (req, res
             })
         }
 
-        const fileBase64 = req.file.buffer.toString('base64')
-
         const result = await pool.query(
             'INSERT INTO documents (filename) VALUES ($1) RETURNING *',
             [req.file.originalname]
         )
 
-        await axios.post(`${process.env.PYTHON_SERVICE_URL}/process`, {
-            fileContent: fileBase64,
-            fileName: req.file.originalname,
-            documentId: result.rows[0].id
-        }, {
-            timeout: 60000,
+        const formData = new FormData()
+        formData.append('file', req.file.buffer, req.file.originalname)
+        formData.append('documentId', result.rows[0].id)
+
+        await axios.post(`${process.env.PYTHON_SERVICE_URL}/process`, formData, {
+            headers: formData.getHeaders(),
+            timeout: 120000,
             maxContentLength: Infinity,
             maxBodyLength: Infinity
         })
