@@ -7,9 +7,9 @@ def generate_answer(question, relevant_chunks):
     context = "\n\n".join(relevant_chunks)
 
     prompt = f"""You are an internal assistant.
-Give a structured answer with citations.
-Give onlt two to three line answer.
+Give only two to three line answer.
 Answer ONLY using the provided context below.
+Do NOT use any external or general knowledge, even if you know the answer.
 If the answer is not in the context, say:
 'I couldn't find the relevant information.'
 
