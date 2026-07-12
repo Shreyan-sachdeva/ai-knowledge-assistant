@@ -34,6 +34,13 @@ class AskRequest(BaseModel):
 
 class HistoryRequest(BaseModel):
     session_id: str
+
+@app.get("/warmup")
+async def warmup():
+    from services.embedder import get_model
+    get_model()
+    return {"status": "model loaded"}
+    
 @app.post("/process")
 async def process_document(file: UploadFile = File(...), documentId: int = Form(...)):
     try:
