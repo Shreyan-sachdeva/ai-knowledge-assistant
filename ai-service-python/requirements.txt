@@ -5,3 +5,4 @@ fastembed
 psycopg2-binary
 python-dotenv
 groq
+python-multipart
