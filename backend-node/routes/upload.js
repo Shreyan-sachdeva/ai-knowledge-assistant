@@ -24,12 +24,21 @@ router.post('/upload', protect, adminOnly, upload.single('pdf'), async (req, res
         formData.append('file', req.file.buffer, req.file.originalname)
         formData.append('documentId', result.rows[0].id)
 
-        await axios.post(`${process.env.PYTHON_SERVICE_URL}/process`, formData, {
-            headers: formData.getHeaders(),
-            timeout: 120000,
-            maxContentLength: Infinity,
-            maxBodyLength: Infinity
-        })
+        try {
+            await axios.post(`${process.env.PYTHON_SERVICE_URL}/process`, formData, {
+                headers: formData.getHeaders(),
+                timeout: 120000,
+                maxContentLength: Infinity,
+                maxBodyLength: Infinity
+            })
+        } catch (axiosErr) {
+            console.error('AXIOS ERROR DETAILS:')
+            console.error('Message:', axiosErr.message)
+            console.error('Code:', axiosErr.code)
+            console.error('Response status:', axiosErr.response?.status)
+            console.error('Response data:', axiosErr.response?.data)
+            throw axiosErr
+        }
 
         res.status(200).json({
             success: true,
