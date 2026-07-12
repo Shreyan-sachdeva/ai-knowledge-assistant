@@ -24,6 +24,10 @@ router.post('/upload', protect, adminOnly, upload.single('pdf'), async (req, res
             fileContent: fileBase64,
             fileName: req.file.originalname,
             documentId: result.rows[0].id
+        }, {
+            timeout: 60000,
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity
         })
 
         res.status(200).json({
