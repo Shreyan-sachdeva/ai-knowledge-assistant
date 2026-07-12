@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin-Ai-Knowledge-Assistant</title>
+    <script src="config.js"></script>
     <style>
         body {
             margin: 0;
@@ -13,7 +14,7 @@
             display: flex;
             justify-content: center;
             font-family: Arial, ;
-            background-color: #f0f0f0;
+            background-color: #121212;
         }
 
         .container {
@@ -22,7 +23,7 @@
         }
 
         .section {
-            background-color: white;
+            background-color: #1e1e1e;
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
@@ -30,7 +31,7 @@
 
         h2 {
             margin-top: 0;
-            color: #333;
+            color: #f0f0f0;
         }
 
         input[type="file"] {
@@ -56,7 +57,7 @@
         td {
             text-align: left;
             padding: 8px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #2a2a2a;
         }
 
         th {
@@ -101,7 +102,7 @@
             <div class="nav-buttons">
                 <button class="chat-btn" onclick="window.location.href='user.html'">Go to Chat</button>
                 <button class="logout-btn"
-                    onclick="localStorage.removeItem('token'); localStorage.removeItem('role'); window.location.href='login.html'">Logout</button>
+                    onclick="localStorage.removeItem('token'); localStorage.removeItem('role'); window.location.href='index.html'">Logout</button>
             </div>
         </div>
         <div class="section">
@@ -129,7 +130,7 @@
         }
 
         if (!getToken()) {
-            window.location.href = 'login.html'
+            window.location.href = 'index.html'
         }
         async function uploadPDF() {
             const fileInput = document.getElementById('pdfFile')
@@ -138,7 +139,7 @@
             const formData = new FormData()
             formData.append('pdf', file)
             try {
-                const response = await fetch('http://localhost:3000/api/upload', {
+                const response = await fetch(`${CONFIG.NODE_URL}/api/upload`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + getToken()
@@ -155,7 +156,7 @@
         async function getDocuments() {
             const tbody = document.getElementById('documentsTable')
             try {
-                const response = await fetch('http://localhost:3000/api/documents', {
+                const response = await fetch(`${CONFIG.NODE_URL}/api/documents`, {
                     headers: {
                         'Authorization': 'Bearer ' + getToken()
                     }
@@ -180,7 +181,7 @@
         }
         async function deleteDocument(id) {
             try {
-                const response = await fetch(`http://localhost:3000/api/documents/${id}`, {
+                const response = await fetch(`${CONFIG.NODE_URL}/api/documents/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': 'Bearer ' + getToken()

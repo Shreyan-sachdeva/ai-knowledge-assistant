@@ -13,3 +13,11 @@ venv/
 .venv/
 
 .env
+
+#frontend
+frontend/config.js
+
+*.pyc
+*.pyo
+.DS_Store          # Mac users
+Thumbs.db          # Windows users

@@ -5,29 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - AI Knowledge Assistant</title>
+    <script src="config.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #121212;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
         .register-box {
-            background-color: white;
+            background-color: #1e1e1e;
             padding: 40px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
             width: 350px;
         }
-        h2 { text-align: center; color: #333; margin-bottom: 24px; }
-        label { display: block; margin-bottom: 6px; color: #555; font-size: 14px; }
+        h2 { text-align: center; color: #f0f0f0; margin-bottom: 24px; }
+        label { display: block; margin-bottom: 6px; color: #aaa; font-size: 14px; }
         input {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #333;
             border-radius: 6px;
             margin-bottom: 16px;
             font-size: 14px;
@@ -46,7 +47,7 @@
         button:hover { background-color: #45a049; }
         .error { color: red; font-size: 13px; text-align: center; margin-top: 12px; display: none; }
         .success { color: green; font-size: 13px; text-align: center; margin-top: 12px; display: none; }
-        .login-link { text-align: center; margin-top: 16px; font-size: 14px; color: #555; }
+        .login-link { text-align: center; margin-top: 16px; font-size: 14px; color: #aaa; }
         .login-link a { color: #4CAF50; text-decoration: none; }
         .login-link a:hover { text-decoration: underline; }
     </style>
@@ -65,7 +66,7 @@
         <p class="error" id="errorMsg"></p>
         <p class="success" id="successMsg"></p>
         <div class="login-link">
-            Already have an account? <a href="login.html">Login</a>
+            Already have an account? <a href="index.html">Login</a>
         </div>
     </div>
 
@@ -99,7 +100,7 @@
             }
 
             try {
-                const response = await fetch('http://localhost:3000/api/auth/register', {
+                const response = await fetch(`${CONFIG.NODE_URL}/api/auth/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
@@ -111,7 +112,7 @@
                     successMsg.style.display = 'block'
                     successMsg.textContent = 'Account created! Redirecting to login...'
                     setTimeout(() => {
-                        window.location.href = 'login.html'
+                        window.location.href = 'index.html'
                     }, 2000)
                 } else {
                     errorMsg.style.display = 'block'

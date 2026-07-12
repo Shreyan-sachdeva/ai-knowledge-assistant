@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Knowledge Assistant</title>
-
+    <script src="config.js"></script>
     <style>
         body {
             font-family: Arial;
-            background-color: #f0f0f0;
+            background-color: #121212;
             display: flex;
             justify-content: center;
             padding: 20px;
@@ -17,7 +17,7 @@
 
         .chat-container {
             width: 500px;
-            background-color: white;
+            background-color: #1e1e1e;
             border-radius: 10px;
             display: flex;
             flex-direction: column;
@@ -55,20 +55,20 @@
 
         .bot-message {
             align-self: flex-start;
-            background-color: #e4e4e4;
-            color: #333;
+            background-color: #2a2a2a;
+            color: #eee;
         }
 
         .chat-input-area {
             display: flex;
             padding: 10px;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #2a2a2a;
         }
 
         #questionInput {
             flex: 1;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #333;
             border-radius: 6px;
             margin-right: 8px;
         }
@@ -83,14 +83,14 @@
         }
 
         #sendBtn:disabled {
-            background-color: #aaa;
+            background-color: #555;
             cursor: not-allowed;
         }
 
         .time-bubble {
             align-self: flex-start;
-            background-color: #d0d0d0;
-            color: #555;
+            background-color: #333;
+            color: #aaa;
             font-size: 11px;
             padding: 3px 8px;
             border-radius: 10px;
@@ -148,7 +148,7 @@
             const thinkingMsg = addMessage('Thinking', 'bot')
 
             try {
-                const response = await fetch('http://localhost:8000/ask', {
+                const response = await fetch(`${CONFIG.PYTHON_URL}/ask`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
