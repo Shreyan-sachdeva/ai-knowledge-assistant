@@ -1,6 +1,6 @@
 import psycopg2
 import os
-
+# where neon
 def get_connection():
     return psycopg2.connect(
         host = os.getenv('DB_HOST'),
@@ -41,6 +41,9 @@ def search_similar_chunks(query_embedding, limit = 1):
         conn.close()       
 
 def save_chat_history(session_id, question, answer):
+
+    # store where
+
     conn = get_connection()
     cursor = conn.cursor()
     try:
