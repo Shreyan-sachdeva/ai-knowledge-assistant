@@ -42,14 +42,14 @@
             margin-top: 3px;
         }
 
-        nav a {
+        header a {
             color: #888;
             text-decoration: none;
             font-size: 13px;
             transition: color 0.3s;
         }
 
-        nav a:hover {
+        header a:hover {
             color: #00ff88;
         }
 
@@ -128,6 +128,18 @@
             font-style: italic;
         }
 
+        .welcome-msg {
+            text-align: center;
+            color: #333;
+            font-size: 14px;
+            margin: auto;
+            padding: 40px;
+        }
+
+        .welcome-msg span {
+            color: #00ff88;
+        }
+
         .input-area {
             background-color: #111;
             border-top: 1px solid #1a1a1a;
@@ -179,18 +191,6 @@
             color: #444;
             cursor: not-allowed;
         }
-
-        .welcome-msg {
-            text-align: center;
-            color: #333;
-            font-size: 14px;
-            margin: auto;
-            padding: 40px;
-        }
-
-        .welcome-msg span {
-            color: #00ff88;
-        }
     </style>
 </head>
 
@@ -201,9 +201,7 @@
             <h1>⚡ AI Knowledge Assistant</h1>
             <p>Ask questions from your uploaded documents</p>
         </div>
-        <nav>
-            <a href="admin.html">← Admin Panel</a>
-        </nav>
+        <a href="index.html">← Admin Panel</a>
     </header>
 
     <div class="chat-window" id="chatWindow">
@@ -218,9 +216,9 @@
         <button id="sendBtn" onclick="sendMessage()">Send</button>
     </div>
 
-    <script src="config.js"></script>
     <script>
-        const sessionId = "session-" + Date.now()
+        const PYTHON_URL = 'https://ai-knowledge-assistant-python.onrender.com'
+        const sessionId = 'session-' + Date.now()
 
         function addMessage(text, sender) {
             const chatWindow = document.getElementById('chatWindow')
@@ -262,7 +260,7 @@
             thinkingBubble.classList.add('thinking')
 
             try {
-                const response = await fetch(`${CONFIG.PYTHON_URL}/ask`, {
+                const response = await fetch(`${PYTHON_URL}/ask`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
