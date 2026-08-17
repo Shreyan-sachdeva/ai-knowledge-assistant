@@ -106,21 +106,12 @@
         }
 
         button {
-            width: 100%;
-            padding: 12px;
-            background-color: #00ff88;
+            background-color: #00cc6a;
             color: #000;
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 10px;
         }
 
         button:hover {
-            background-color: #00cc6a;
+            background-color: #00aa55;
         }
 
         button:disabled {
@@ -340,18 +331,28 @@
 
         async function getDocuments() {
             const tbody = document.getElementById('documentsTable')
+
+            // show loading with timeout warning
+            tbody.innerHTML = `
+        <tr>
+            <td colspan="4" class="empty-state">
+                Loading... (may take up to 60s on first load)
+            </td>
+        </tr>
+    `
+
             try {
                 const response = await fetch(`${NODE_URL}/api/documents`)
                 const data = await response.json()
 
                 if (data.documents.length === 0) {
                     tbody.innerHTML = `
-                        <tr>
-                            <td colspan="4" class="empty-state">
-                                No documents uploaded yet.
-                            </td>
-                        </tr>
-                    `
+                <tr>
+                    <td colspan="4" class="empty-state">
+                        No documents uploaded yet.
+                    </td>
+                </tr>
+            `
                     return
                 }
 
@@ -359,28 +360,28 @@
                 data.documents.forEach((doc, index) => {
                     const date = new Date(doc.uploaded_at).toLocaleString()
                     tbody.innerHTML += `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${doc.filename}</td>
-                            <td>${date}</td>
-                            <td>
-                                <button class="delete-btn"
-                                    onclick="deleteDocument(${doc.id})">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${doc.filename}</td>
+                    <td>${date}</td>
+                    <td>
+                        <button class="delete-btn"
+                            onclick="deleteDocument(${doc.id})">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `
                 })
 
             } catch (err) {
                 tbody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="empty-state">
-                            Failed to load documents.
-                        </td>
-                    </tr>
-                `
+            <tr>
+                <td colspan="4" class="empty-state" style="color:#ff4444">
+                    ✗ Failed to connect. Check if server is running.
+                </td>
+            </tr>
+        `
                 console.error(err)
             }
         }
